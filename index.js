@@ -8,19 +8,12 @@ const server = http.createServer(async (req, res) => {
         try {
             const url = "https://energy-ua.info/cherga/3";
             const browser = await puppeteer.launch({
-                args: [
-                    "--disable-setuid-sandbox",
-                    "--no-sandbox",
-                    "--single-process",
-                    "--no-zygote",
-                ],
+                headless: true, // У Production зазвичай headless
+                args: ['--no-sandbox', '--disable-setuid-sandbox'], // Для Puppeteer у Docker
             });
 
             const page = await browser.newPage();
-            await page.setUserAgent(
-                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36'
-            );
-            await page.goto(url, { waitUntil: 'networkidle2' });
+            await page.goto(url);
 
             const data = await page.evaluate(() => {
                 const elements = document.querySelectorAll('.periods_items');

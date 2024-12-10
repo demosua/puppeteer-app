@@ -1,11 +1,10 @@
 # Використовуємо офіційний Node.js образ
-FROM node:16-slim
+FROM node:18
 
-# Встановлюємо системні залежності для Puppeteer і Chrome
+# Встановлюємо залежності для Puppeteer
 RUN apt-get update \
+  && apt-get install -y wget gnupg \
   && apt-get install -y \
-  wget \
-  gnupg \
   libnss3 \
   libxss1 \
   libasound2 \
@@ -36,13 +35,7 @@ RUN npm install
 # Копіюємо файли проєкту
 COPY . .
 
-# Виставляємо змінну середовища для Puppeteer (щоб пропускати завантаження Chrome у локальному режимі)
-ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
-
-# Встановлюємо Puppeteer із Chrome
-RUN npm install puppeteer
-
-# Експортуємо порт
+# Вказуємо порт
 EXPOSE 3000
 
 # Запускаємо додаток
