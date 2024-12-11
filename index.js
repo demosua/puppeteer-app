@@ -1,13 +1,14 @@
 const puppeteer = require('puppeteer');
 const http = require('http');
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const server = http.createServer(async (req, res) => {
     if (req.url === '/') {
         try {
             const url = "https://energy-ua.info/cherga/3";
             const browser = await puppeteer.launch({
+                headless: true,
                 args: [
                     "--disable-setuid-sandbox",
                     "--no-sandbox",
