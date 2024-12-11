@@ -7,15 +7,20 @@ const server = http.createServer(async (req, res) => {
     if (req.url === '/') {
         try {
             const url = "https://energy-ua.info/cherga/3";
-            const browser = await puppeteer.launch({
-                headless: true,
-                args: [
-                    "--disable-setuid-sandbox",
-                    "--no-sandbox",
-                    "--single-process",
-                    "--no-zygote",
-                ],
-            });
+
+                const browser = await puppeteer.launch({
+                    headless: true,
+                    args: [
+                      "--disable-setuid-sandbox",
+                      "--no-sandbox",
+                      "--single-process",
+                      "--no-zygote",
+                    ],
+                    executablePath:
+                      process.env.NODE_ENV === "production"
+                        ? process.env.PUPPETEER_EXECUTABLE_PATH
+                        : puppeteer.executablePath(),
+                  });
 
             const page = await browser.newPage();
             await page.setUserAgent(
